@@ -123,11 +123,7 @@ class CategoryController extends BaseController
             $data['slug'] = str_slug($data['title']);
         }
 
-        $result = $item
-            ->fill($data)
-            ->save();
-
-        //$result = $item->update($data);
+        $result = $item->update($data);
 
         if ($result) {
             return redirect()

@@ -67,11 +67,6 @@ class CategoryController extends BaseController
             $data['slug'] = str_slug($data['title']);
         }
 
-        /*// Создаст объект, но не добавит в БД
-        $item = new BlogCategory($data);
-        dd($item);
-        $item->save();*/
-
         // Создаст объект и добавит в БД
         $item = (new BlogCategory())->create($data);
 
@@ -91,16 +86,13 @@ class CategoryController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, BlogCategoryRepository $categoryRepository)
+    public function edit($id)
     {
-        /*$item = BlogCategory::findOrFail($id);
-        $categoryList = BlogCategory::all();*/
-
-        $item = $categoryRepository->getEdit($id);
+        $item = $this->blogCategoryRepository->getEdit($id);
         if (empty($item)) {
             abort(404);
         }
-        $categoryList = $categoryRepository->getForCombobox();
+        $categoryList = $this->blogCategoryRepository->getForCombobox();
 
         return view('blog.admin.categories.edit',
             compact('item', 'categoryList'));
@@ -116,26 +108,8 @@ class CategoryController extends BaseController
      */
     public function update(BlogCategoryUpdateRequest $request, $id)
     {
-        /*$rules = [
-            'title'       => 'required|min:5|max:200',
-            'slug'        => 'max:200',
-            'description' => 'string|max:500|min:3',
-            'parent_id'   => 'required|integer|exists:blog_categories,id',
-        ];*/
-        /*$validatedData = $this->validate($request, $rules);
-        $validatedData = $request->validate($rules);*/
-        /*$validator = \Validator::make($request->all(), $rules);
-        $validatedData[] = $validator->passes();
-        $validatedData[] = $validator->validate();
-        $validatedData[] = $validator->valid();
-        $validatedData[] = $validator->failed();
-        $validatedData[] = $validator->errors();
-        $validatedData[] = $validator->fails();
+        $item = $this->blogCategoryRepository->getEdit($id);
 
-
-        dd($validatedData);*/
-
-        $item = BlogCategory::find($id);
         if (empty($item)) {
             return back()
                 ->withErrors(['msg' => "Запись id=[{$id}] не найдена"])

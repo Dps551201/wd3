@@ -47,7 +47,8 @@ class CategoryController extends BaseController
     public function create()
     {
         $item = new BlogCategory();
-        $categoryList = $this->blogCategoryRepository->getForCombobox();
+        $categoryList
+            = $this->blogCategoryRepository->getForCombobox();
 
         return view('blog.admin.categories.edit',
             compact('item', 'categoryList'));
@@ -82,17 +83,19 @@ class CategoryController extends BaseController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         $item = $this->blogCategoryRepository->getEdit($id);
+
         if (empty($item)) {
             abort(404);
         }
-        $categoryList = $this->blogCategoryRepository->getForCombobox();
+        $categoryList
+           = $this->blogCategoryRepository->getForCombobox();
 
         return view('blog.admin.categories.edit',
             compact('item', 'categoryList'));
